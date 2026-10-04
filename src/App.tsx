@@ -86,6 +86,26 @@ const PAGE_TITLES: Record<string, Record<PageView, string>> = {
 };
 
 function parsePath(pathname: string): { lang?: Language; page: PageView } {
+  // Support hash routing (e.g., #admin, #/admin)
+  if (typeof window !== 'undefined' && window.location.hash) {
+    const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase().trim();
+    if (hash && PAGE_ALIASES[hash]) {
+      return { page: PAGE_ALIASES[hash] };
+    }
+  }
+
+  // Support query param (e.g., ?page=admin)
+  if (typeof window !== 'undefined' && window.location.search) {
+    const params = new URLSearchParams(window.location.search);
+    const pageParam = params.get('page')?.toLowerCase().trim();
+    if (pageParam && PAGE_ALIASES[pageParam]) {
+      return { page: PAGE_ALIASES[pageParam] };
+    }
+    if (params.has('admin')) {
+      return { page: 'admin' };
+    }
+  }
+
   const clean = pathname.toLowerCase().replace(/^\/+|\/+$/g, '');
   if (!clean) return { page: 'home' };
 
@@ -122,17 +142,21 @@ function MainAppLayout() {
     }
   }, [currentPage]);
 
-  // Handle browser Back & Forward buttons
+  // Handle browser Back & Forward buttons and hash changes
   useEffect(() => {
-    const handlePopState = () => {
+    const handleUrlChange = () => {
       if (typeof window !== 'undefined') {
         const parsed = parsePath(window.location.pathname);
         setCurrentPage(parsed.page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleUrlChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('hashchange', handleUrlChange);
+    };
   }, []);
 
   const handleNavigate = (page: PageView) => {

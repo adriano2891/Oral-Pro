@@ -18,10 +18,14 @@ import {
   Mail,
   ShieldCheck,
   Check,
+  Eye,
+  EyeOff,
+  KeyRound,
 } from 'lucide-react';
 import { Booking, Lead, KnowledgeItem, MediaAsset, AgentMetric } from '../types';
 import { useLanguage } from '../i18n/LanguageContext';
 import { LanguageSelector } from './LanguageSelector';
+import { OralProLogo } from './OralProLogo';
 
 interface AdminDashboardProps {
   onBackToSite: () => void;
@@ -30,9 +34,15 @@ interface AdminDashboardProps {
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) => {
   const { t } = useLanguage();
 
-  // Simple auth gate
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  // Simple auth gate with PIN: admin2026
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('oralpro_admin_auth') === 'admin2026';
+    }
+    return false;
+  });
   const [passwordInput, setPasswordInput] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
   // Active Tab
@@ -137,11 +147,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === 'oralpro2026' || passwordInput === 'admin' || passwordInput === 'oralpro') {
+    const cleanPin = passwordInput.trim();
+    if (cleanPin === 'admin2026') {
       setIsAuthenticated(true);
       setAuthError(null);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('oralpro_admin_auth', 'admin2026');
+      }
     } else {
-      setAuthError('Palavra-passe incorreta. Utilize: oralpro');
+      setAuthError('PIN incorreto. Introduza o PIN autorizado.');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPasswordInput('');
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('oralpro_admin_auth');
     }
   };
 
@@ -271,57 +293,86 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white rounded-2xl p-8 shadow-2xl space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mx-auto">
-              <Lock className="w-6 h-6" />
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
+        {/* Subtle radial glow background */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-72 h-72 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="w-full max-w-sm bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl p-7 sm:p-8 shadow-2xl relative z-10 space-y-6">
+          {/* Brand Emblem & Logo */}
+          <div className="flex flex-col items-center justify-center text-center space-y-3">
+            <OralProLogo size="md" light />
+            
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-bold uppercase tracking-wider mt-1">
+              <KeyRound className="w-3.5 h-3.5 text-blue-400" />
+              <span>Painel de Gestão</span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900">
-              {t.admin.loginTitle}
+          </div>
+
+          <div className="text-center space-y-1">
+            <h2 className="text-lg sm:text-xl font-bold text-white font-display">
+              Acesso com PIN de Segurança
             </h2>
-            <p className="text-xs text-slate-500">
-              {t.admin.loginDesc}
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Introduza o PIN de acesso autorizado para visualizar agendamentos, leads e configurações.
             </p>
           </div>
 
           {authError && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-lg">
-              {authError}
+            <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0 animate-pulse" />
+              <span>{authError}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                {t.admin.passwordLabel}
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                PIN de Acesso
               </label>
-              <input
-                type="password"
-                required
-                placeholder={t.admin.passwordPlaceholder}
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-              />
-              <p className="text-[11px] text-slate-400 mt-1">
-                {t.admin.demoNote}
-              </p>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  autoFocus
+                  placeholder="Introduza o PIN"
+                  value={passwordInput}
+                  onChange={(e) => {
+                    setPasswordInput(e.target.value);
+                    if (authError) setAuthError(null);
+                  }}
+                  className="w-full pl-4 pr-11 py-3 bg-slate-950/80 border border-slate-700/80 rounded-xl text-white text-center text-base tracking-widest font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:tracking-normal placeholder:font-sans placeholder:text-slate-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
+                  title={showPassword ? 'Ocultar PIN' : 'Mostrar PIN'}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2">
+            <button
+              type="submit"
+              className="w-full py-3 bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-semibold text-xs sm:text-sm rounded-xl transition-all shadow-lg shadow-blue-600/25 cursor-pointer flex items-center justify-center gap-2"
+            >
+              <Lock className="w-4 h-4" />
+              <span>Desbloquear Acesso</span>
+            </button>
+
+            <div className="text-center pt-2">
               <button
                 type="button"
                 onClick={onBackToSite}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-800"
+                className="text-xs text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
               >
-                {t.admin.backBtn}
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors"
-              >
-                {t.admin.enterBtn}
+                ← Voltar ao site OralPro
               </button>
             </div>
           </form>
@@ -365,8 +416,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               {t.admin.viewSiteBtn}
             </button>
             <button
-              onClick={() => setIsAuthenticated(false)}
-              className="p-1.5 rounded-md hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition-colors"
+              onClick={handleLogout}
+              className="p-1.5 rounded-md hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
               title={t.admin.logoutBtn}
             >
               <LogOut className="w-4 h-4" />

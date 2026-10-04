@@ -4,7 +4,7 @@ import { AgentAvatarImage } from './ChatAgent';
 import { PageView } from '../types';
 import { useLanguage } from '../i18n/LanguageContext';
 import { LanguageSelector } from './LanguageSelector';
-import { Calendar, ShieldAlert, Menu, X, Headset } from 'lucide-react';
+import { Calendar, Menu, X, Headset } from 'lucide-react';
 
 interface NavbarProps {
   currentPage: PageView;
@@ -70,20 +70,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Zone 3: Language Selector & Primary Actions */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Discrete Language Switcher */}
           <LanguageSelector />
-
-          {/* Admin link */}
-          <button
-            onClick={() => onNavigate('admin')}
-            className={`p-1.5 sm:p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors shrink-0 ${
-              currentPage === 'admin' ? 'bg-slate-100 text-blue-600' : ''
-            }`}
-            title={t.common.adminPortal}
-          >
-            <ShieldAlert className="w-4 h-4" />
-          </button>
 
           {/* Primary Action Button - Opens Dedicated Agendamento Page */}
           <button
