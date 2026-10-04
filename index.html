@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-PT" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function() {
+        try {
+          var _origFetch = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return _origFetch;
+            },
+            set: function(fn) {
+              _origFetch = fn;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e1) {
+          try {
+            var _protoFetch = Window.prototype.fetch;
+            Object.defineProperty(Window.prototype, 'fetch', {
+              get: function() {
+                return _protoFetch;
+              },
+              set: function(fn) {
+                _protoFetch = fn;
+              },
+              configurable: true,
+              enumerable: true
+            });
+          } catch (e2) {}
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OralPro - Marketing e Captação para Clínicas Dentárias</title>
+    <meta name="description" content="Estratégia comercial e marketing especializado para clínicas dentárias. Captação de pacientes de alto valor para implantologia, ortodontia e estética dentária." />
+    <meta property="og:title" content="OralPro - Marketing e Captação para Clínicas Dentárias" />
+    <meta property="og:description" content="Estratégia comercial e marketing especializado para clínicas dentárias. Captação de pacientes de alto valor para implantologia, ortodontia e estética dentária." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Cabinet+Grotesk:wght@500;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-white text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

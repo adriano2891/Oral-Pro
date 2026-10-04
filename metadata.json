@@ -1,0 +1,6 @@
+{
+  "name": "OralPro - Marketing e Captação para Clínicas Dentárias",
+  "description": "Estratégia comercial e marketing especializado para clínicas dentárias. Captação de pacientes de alto valor para implantologia, ortodontia e estética dentária.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
