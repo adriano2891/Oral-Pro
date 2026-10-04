@@ -21,11 +21,13 @@ import {
   Eye,
   EyeOff,
   KeyRound,
+  Layers,
 } from 'lucide-react';
 import { Booking, Lead, KnowledgeItem, MediaAsset, AgentMetric } from '../types';
 import { useLanguage } from '../i18n/LanguageContext';
 import { LanguageSelector } from './LanguageSelector';
 import { OralProLogo } from './OralProLogo';
+import { SiteContentManager } from './SiteContentManager';
 
 interface AdminDashboardProps {
   onBackToSite: () => void;
@@ -47,8 +49,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<
-    'agendamentos' | 'leads' | 'conversas' | 'conhecimento' | 'media' | 'melhoria'
-  >('agendamentos');
+    'agendamentos' | 'leads' | 'conversas' | 'conhecimento' | 'conteudos' | 'media' | 'melhoria'
+  >('conteudos');
 
   // Real-time Data
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -479,15 +481,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
           </button>
 
           <button
-            onClick={() => setActiveTab('media')}
+            onClick={() => setActiveTab('conteudos')}
             className={`px-3.5 py-2 text-xs font-semibold rounded-lg whitespace-nowrap transition-colors flex items-center gap-2 ${
-              activeTab === 'media'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
+              activeTab === 'conteudos'
+                ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-300'
+                : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 font-bold'
             }`}
           >
-            <ImageIcon className="w-4 h-4" />
-            <span>{t.admin.tabMedia} ({media.length})</span>
+            <Layers className="w-4 h-4 text-blue-500" />
+            <span>Conteúdos e imagens do site</span>
           </button>
 
           <button
@@ -825,61 +827,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
           </div>
         )}
 
-        {/* TAB 5: MEDIA */}
-        {activeTab === 'media' && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-bold text-base text-slate-900">
-                  {t.admin.mediaTitle}
-                </h3>
-                <p className="text-xs text-slate-500">
-                  {t.admin.mediaSubtitle}
-                </p>
-              </div>
-
-              <button
-                onClick={() => setShowAddMediaModal(true)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>{t.admin.addMediaBtn}</span>
-              </button>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {media.map((m) => (
-                <div key={m.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-between">
-                  <div>
-                    <div className="relative aspect-video bg-slate-900">
-                      <img
-                        src={m.url}
-                        alt={m.title}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <span className="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                        {m.aspectRatio} · {m.section}
-                      </span>
-                    </div>
-
-                    <div className="p-4 space-y-2">
-                      <h4 className="font-bold text-xs text-slate-900 line-clamp-1">
-                        {m.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-500">
-                        {m.origin}
-                      </p>
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>{t.common.verified}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* TAB 5: CONTEÚDOS E IMAGENS DO SITE */}
+        {activeTab === 'conteudos' && (
+          <SiteContentManager />
         )}
 
         {/* TAB 6: CONTINUOUS AI IMPROVEMENT */}

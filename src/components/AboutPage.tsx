@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { PageView } from '../types';
+import { InstagramGallerySection } from './InstagramGallerySection';
 
 interface AboutPageProps {
   onOpenBooking: () => void;
@@ -86,6 +87,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking, onNavigate 
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Real Photographic Gallery from Instagram @oralpro.italia */}
+        <div className="my-14 -mx-4 sm:-mx-6 lg:-mx-8">
+          <InstagramGallerySection />
         </div>
 
         {/* CTA banner */}

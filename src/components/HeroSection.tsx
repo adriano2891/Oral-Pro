@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, MessageSquare, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useSiteContent } from '../context/SiteContentContext';
 
 interface HeroSectionProps {
   onOpenBooking: () => void;
@@ -9,7 +10,14 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onOpenChat }) => {
   const { t } = useLanguage();
+  const { getSlot } = useSiteContent();
   const [activeStep, setActiveStep] = useState<number>(0);
+
+  const heroSlot = getSlot(
+    'home_hero',
+    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
+    'Mario Provenzano - OralPro'
+  );
 
   const acquisitionSteps = t.hero.steps;
 
@@ -95,9 +103,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onOpenC
               {/* Photo Representation with Context */}
               <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-900 border border-slate-100 group">
                 <img
-                  src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80"
-                  alt="Mario Provenzano - OralPro"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  src={heroSlot.imageUrl}
+                  alt={heroSlot.altText}
+                  className={`w-full h-full ${
+                    heroSlot.fit === 'contain' ? 'object-contain' : 'object-cover'
+                  } ${
+                    heroSlot.position === 'top'
+                      ? 'object-top'
+                      : heroSlot.position === 'bottom'
+                      ? 'object-bottom'
+                      : 'object-center'
+                  } transition-transform duration-500 group-hover:scale-105`}
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />

@@ -1,0 +1,262 @@
+{
+  "slots": [
+    {
+      "key": "home_hero",
+      "page": "home",
+      "pageLabel": "Página Inicial",
+      "sectionLabel": "Apresentação (Hero)",
+      "description": "Imagem principal de destaque da página inicial",
+      "imageUrl": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Instalações clínicas e tecnologia avançada OralPro",
+      "aspectRatio": "16:9",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "home_about",
+      "page": "home",
+      "pageLabel": "Página Inicial",
+      "sectionLabel": "Sobre a OralPro (Secção Resumo)",
+      "description": "Fotografia representativa da presença executiva e equipa da OralPro",
+      "imageUrl": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Mario Provenzano em apresentação institucional OralPro",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "about_founder",
+      "page": "sobre",
+      "pageLabel": "Sobre a OralPro",
+      "sectionLabel": "Apresentação Fundador (Mario Provenzano)",
+      "description": "Foto oficial do fundador em conferência odontológica em Itália",
+      "imageUrl": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Mario Provenzano em conferência para diretores de clínicas em Itália",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "about_masterclass",
+      "page": "sobre",
+      "pageLabel": "Sobre a OralPro",
+      "sectionLabel": "Masterclasses & Eventos em Itália",
+      "description": "Fotografia das sessões presenciais com médicos dentistas",
+      "imageUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Masterclass presencial da OralPro com diretores clínicos em Itália",
+      "aspectRatio": "16:9",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "services_implantologia",
+      "page": "servicos",
+      "pageLabel": "Serviços",
+      "sectionLabel": "Implantologia e Reabilitação Oral",
+      "description": "Ambiente de reabilitação e bloco cirúrgico de implantologia",
+      "imageUrl": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Gabinete cirúrgico odontológico para implantes e reabilitação",
+      "aspectRatio": "4:3",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "services_estetica",
+      "page": "servicos",
+      "pageLabel": "Serviços",
+      "sectionLabel": "Estética Dentária e Facetas",
+      "description": "Tecnologia de planeamento estético do sorriso",
+      "imageUrl": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Planeamento estético e facetas cerâmicas em clínica parceira",
+      "aspectRatio": "4:3",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "services_ortodontia",
+      "page": "servicos",
+      "pageLabel": "Serviços",
+      "sectionLabel": "Ortodontia Invisível e Alinhadores",
+      "description": "Visualização 3D e diagnóstico ortodôntico digital",
+      "imageUrl": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Acompanhamento digital e alinhadores transparentes",
+      "aspectRatio": "4:3",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "gallery_1",
+      "page": "galeria",
+      "pageLabel": "Galeria Oficial (@oralpro.italia)",
+      "sectionLabel": "Apresentação Mario Provenzano",
+      "description": "Foto 1 da galeria de bastidores e eventos",
+      "imageUrl": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Mario Provenzano em apresentação institucional OralPro",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "gallery_2",
+      "page": "galeria",
+      "pageLabel": "Galeria Oficial (@oralpro.italia)",
+      "sectionLabel": "Masterclass & Eventi dal Vivo",
+      "description": "Foto 2 da galeria de bastidores e eventos",
+      "imageUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Masterclass presencial da OralPro com dentistas parceiros",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "gallery_3",
+      "page": "galeria",
+      "pageLabel": "Galeria Oficial (@oralpro.italia)",
+      "sectionLabel": "Instalações & Gabinetes Clínicos",
+      "description": "Foto 3 da galeria de bastidores e eventos",
+      "imageUrl": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Ambiente clínico e equipamento de última geração em clínica parceira",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "gallery_4",
+      "page": "galeria",
+      "pageLabel": "Galeria Oficial (@oralpro.italia)",
+      "sectionLabel": "Consultoria com Secretárias Clínicas",
+      "description": "Foto 4 da galeria de bastidores e eventos",
+      "imageUrl": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Consultoria e alinhamento de triagem com equipas de apoio clínico",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "gallery_5",
+      "page": "galeria",
+      "pageLabel": "Galeria Oficial (@oralpro.italia)",
+      "sectionLabel": "Cirurgia & Biossegurança",
+      "description": "Foto 5 da galeria de bastidores e eventos",
+      "imageUrl": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Biossegurança e ambiente de implantologia cirúrgica",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    },
+    {
+      "key": "gallery_6",
+      "page": "galeria",
+      "pageLabel": "Galeria Oficial (@oralpro.italia)",
+      "sectionLabel": "Tecnologia & Ortodontia Digital",
+      "description": "Foto 6 da galeria de bastidores e eventos",
+      "imageUrl": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=1200&q=85",
+      "altText": "Planeamento estético e tecnologias de alinhadores transparentes",
+      "aspectRatio": "16:10",
+      "fit": "cover",
+      "position": "center",
+      "hasChanges": false
+    }
+  ],
+  "customSections": [],
+  "mediaLibrary": [
+    {
+      "id": "lib-1",
+      "name": "Mario Provenzano Apresentação",
+      "url": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=85",
+      "category": "Fundador & Eventos",
+      "aspectRatio": "16:10",
+      "size": "420 KB",
+      "origin": "Instagram @oralpro.italia",
+      "createdAt": "2026-10-01T10:00:00Z",
+      "usedIn": [
+        "Página Inicial > Sobre a OralPro (Secção Resumo)",
+        "Sobre a OralPro > Apresentação Fundador (Mario Provenzano)",
+        "Galeria Oficial (@oralpro.italia) > Apresentação Mario Provenzano"
+      ]
+    },
+    {
+      "id": "lib-2",
+      "name": "Masterclass Presencial Dentistas",
+      "url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
+      "category": "Eventos ao Vivo",
+      "aspectRatio": "16:9",
+      "size": "512 KB",
+      "origin": "Instagram @oralpro.italia",
+      "createdAt": "2026-10-01T10:30:00Z",
+      "usedIn": [
+        "Sobre a OralPro > Masterclasses & Eventos em Itália",
+        "Galeria Oficial (@oralpro.italia) > Masterclass & Eventi dal Vivo"
+      ]
+    },
+    {
+      "id": "lib-3",
+      "name": "Instalações & Consultório Parceiro",
+      "url": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=85",
+      "category": "Instalações",
+      "aspectRatio": "16:9",
+      "size": "620 KB",
+      "origin": "Instagram @oralpro.italia",
+      "createdAt": "2026-10-01T11:00:00Z",
+      "usedIn": [
+        "Página Inicial > Apresentação (Hero)",
+        "Galeria Oficial (@oralpro.italia) > Instalações & Gabinetes Clínicos"
+      ]
+    },
+    {
+      "id": "lib-4",
+      "name": "Consultoria de Triagem com Secretárias",
+      "url": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
+      "category": "Equipa & Triagem",
+      "aspectRatio": "4:3",
+      "size": "390 KB",
+      "origin": "Instagram @oralpro.italia",
+      "createdAt": "2026-10-01T11:30:00Z",
+      "usedIn": [
+        "Serviços > Ortodontia Invisível e Alinhadores",
+        "Galeria Oficial (@oralpro.italia) > Consultoria com Secretárias Clínicas"
+      ]
+    },
+    {
+      "id": "lib-5",
+      "name": "Cirurgia Odontológica & Implantes",
+      "url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=85",
+      "category": "Tratamentos",
+      "aspectRatio": "4:3",
+      "size": "480 KB",
+      "origin": "Instagram @oralpro.italia",
+      "createdAt": "2026-10-01T12:00:00Z",
+      "usedIn": [
+        "Serviços > Implantologia e Reabilitação Oral",
+        "Galeria Oficial (@oralpro.italia) > Cirurgia & Biossegurança"
+      ]
+    },
+    {
+      "id": "lib-6",
+      "name": "Planeamento 3D & Ortodontia Digital",
+      "url": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=1200&q=85",
+      "category": "Tecnologia",
+      "aspectRatio": "4:3",
+      "size": "440 KB",
+      "origin": "Instagram @oralpro.italia",
+      "createdAt": "2026-10-01T12:30:00Z",
+      "usedIn": [
+        "Serviços > Estética Dentária e Facetas",
+        "Galeria Oficial (@oralpro.italia) > Tecnologia & Ortodontia Digital"
+      ]
+    }
+  ],
+  "lastPublished": "2026-10-04T02:26:22.972Z"
+}

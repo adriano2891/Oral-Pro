@@ -5,6 +5,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
+import { cmsStorage } from './src/server/cmsStorage';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +16,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
-app.use(express.json());
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Initialize Gemini on server-side
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -511,6 +513,103 @@ app.post('/api/media', (req: Request, res: Response) => {
 
   mediaAssets.unshift(newAsset);
   res.status(201).json({ success: true, data: newAsset });
+});
+
+// 4.1. Advanced CMS & Site Media Management
+app.get('/api/site-content', (_req: Request, res: Response) => {
+  try {
+    const state = cmsStorage.getState();
+    res.json({ success: true, data: state });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/site-content/slot', (req: Request, res: Response) => {
+  try {
+    const { key, updates } = req.body;
+    if (!key) {
+      return res.status(400).json({ success: false, error: 'Chave do campo é obrigatória.' });
+    }
+    const updated = cmsStorage.updateSlotDraft(key, updates || {});
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Campo não encontrado.' });
+    }
+    res.json({ success: true, data: updated, state: cmsStorage.getState() });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/site-content/publish', (_req: Request, res: Response) => {
+  try {
+    const state = cmsStorage.publishChanges();
+    res.json({ success: true, message: 'Alterações publicadas com sucesso!', data: state });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/site-content/revert', (_req: Request, res: Response) => {
+  try {
+    const state = cmsStorage.revertDrafts();
+    res.json({ success: true, message: 'Rascunhos revertidos com sucesso.', data: state });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/site-content/custom-section', (req: Request, res: Response) => {
+  try {
+    const section = cmsStorage.saveCustomSection(req.body);
+    res.json({ success: true, data: section, state: cmsStorage.getState() });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/site-content/custom-section/:id', (req: Request, res: Response) => {
+  try {
+    const deleted = cmsStorage.deleteCustomSection(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: 'Secção não encontrada.' });
+    }
+    res.json({ success: true, data: deleted, state: cmsStorage.getState() });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/site-content/media-library', (req: Request, res: Response) => {
+  try {
+    const { name, url, category, aspectRatio, size, origin } = req.body;
+    if (!url) {
+      return res.status(400).json({ success: false, error: 'URL ou ficheiro de imagem é obrigatório.' });
+    }
+    const item = cmsStorage.addMediaLibraryItem({
+      name: name || 'Imagem Sem Título',
+      url,
+      category: category || 'Geral',
+      aspectRatio: aspectRatio || '16:9',
+      size: size || 'Otimizado',
+      origin: origin || 'Upload / Biblioteca',
+    });
+    res.status(201).json({ success: true, data: item, state: cmsStorage.getState() });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/site-content/media-library/:id', (req: Request, res: Response) => {
+  try {
+    const deleted = cmsStorage.deleteMediaLibraryItem(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: 'Item não encontrado na biblioteca.' });
+    }
+    res.json({ success: true, data: deleted, state: cmsStorage.getState() });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // 5. Agent Metrics & Feedback

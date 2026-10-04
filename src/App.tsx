@@ -21,6 +21,9 @@ import { BookingPage } from './components/BookingPage';
 import { BookingSystem } from './components/BookingSystem';
 import { ChatAgent } from './components/ChatAgent';
 import { AdminDashboard } from './components/AdminDashboard';
+import { InstagramGallerySection } from './components/InstagramGallerySection';
+import { DynamicCustomSections } from './components/DynamicCustomSections';
+import { SiteContentProvider, useSiteContent } from './context/SiteContentContext';
 import { Footer } from './components/Footer';
 
 const PAGE_ALIASES: Record<string, PageView> = {
@@ -191,6 +194,9 @@ function MainAppLayout() {
     setIsChatOpen((prev) => !prev);
   };
 
+  const { getCustomSectionsForPage } = useSiteContent();
+  const currentCustomSections = getCustomSectionsForPage(currentPage);
+
   // If in admin view, render AdminDashboard full-screen
   if (currentPage === 'admin') {
     return (
@@ -236,6 +242,7 @@ function MainAppLayout() {
                 onOpenBooking={() => handleNavigate('agendamento')}
                 onNavigate={handleNavigate}
               />
+              <InstagramGallerySection />
               <ExperienceTrustSection onOpenBooking={() => handleNavigate('agendamento')} />
               <FAQSection
                 onOpenBooking={() => handleNavigate('agendamento')}
@@ -295,6 +302,13 @@ function MainAppLayout() {
           {currentPage === 'agendamento' && (
             <BookingPage onNavigate={handleNavigate} />
           )}
+
+          {/* Dynamic Custom Sections created via Admin CMS */}
+          <DynamicCustomSections
+            sections={currentCustomSections}
+            onOpenBooking={() => handleNavigate('agendamento')}
+            onNavigate={handleNavigate}
+          />
         </main>
 
         {/* Footer - Always visible across all pages */}
@@ -324,6 +338,10 @@ function MainAppLayout() {
 }
 
 export default function App() {
-  return <MainAppLayout />;
+  return (
+    <SiteContentProvider>
+      <MainAppLayout />
+    </SiteContentProvider>
+  );
 }
 
