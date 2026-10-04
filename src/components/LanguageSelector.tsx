@@ -91,12 +91,12 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             e.stopPropagation();
             setDropdownOpen(!dropdownOpen);
           }}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-semibold transition-colors"
+          className="flex items-center gap-1 px-2 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-semibold transition-colors shrink-0"
           aria-label="Selecionar idioma"
         >
-          <Globe className="w-3.5 h-3.5 text-blue-600" />
-          <span>{availableLanguages.find((l) => l.code === language)?.name}</span>
-          <ChevronDown className="w-3 h-3 text-slate-500" />
+          <Globe className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+          <span className="uppercase text-[11px] font-bold tracking-wider">{language}</span>
+          <ChevronDown className="w-3 h-3 text-slate-500 shrink-0" />
         </button>
 
         {dropdownOpen && (
