@@ -49,7 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => onNavigate('home')}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
                   {t.nav.home}
                 </button>
@@ -57,33 +57,57 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => onNavigate('servicos')}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
                   {t.nav.services}
                 </button>
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('metodo')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  {t.nav.method}
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('areas')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  {t.nav.areas}
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('sobre')}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
                   {t.nav.about}
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('agendamento')}
-                  className="hover:text-white transition-colors"
+                  onClick={() => onNavigate('duvidas')}
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
-                  {t.common.scheduleMeeting}
+                  {t.nav.faq}
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => onNavigate('contactos')}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
                   {t.nav.contact}
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('agendamento')}
+                  className="hover:text-white text-blue-400 font-semibold transition-colors cursor-pointer"
+                >
+                  {t.common.scheduleMeeting}
                 </button>
               </li>
             </ul>

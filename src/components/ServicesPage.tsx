@@ -1,19 +1,32 @@
 import React from 'react';
-import { Target, Users, BarChart3, CheckCircle2, Calendar } from 'lucide-react';
+import { Target, Users, BarChart3, CheckCircle2, Calendar, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PageView } from '../types';
 
 interface ServicesPageProps {
   onOpenBooking: () => void;
   onOpenChat: () => void;
+  onNavigate?: (page: PageView) => void;
 }
 
-export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking, onOpenChat }) => {
+export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking, onOpenChat, onNavigate }) => {
   const { t } = useLanguage();
   const icons = [Target, Users, BarChart3];
 
   return (
     <div className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb Navigation */}
+        {onNavigate && (
+          <nav className="flex items-center gap-2 text-xs text-slate-500 mb-8 font-medium">
+            <button onClick={() => onNavigate('home')} className="hover:text-blue-600 transition-colors cursor-pointer">
+              {t.nav.home}
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-semibold">{t.nav.services}</span>
+          </nav>
+        )}
+
         {/* Header */}
         <div className="max-w-3xl mb-14">
           <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">

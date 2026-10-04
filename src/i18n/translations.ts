@@ -242,6 +242,7 @@ export interface TranslationSchema {
   };
   chat: {
     buttonLabel: string;
+    talkToUs: string;
     title: string;
     onlineStatus: string;
     anonymousGreeting: string;
@@ -781,6 +782,7 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     chat: {
       buttonLabel: 'Fale com a OralPro',
+      talkToUs: 'Fale Connosco',
       title: 'Assistente Virtual OralPro',
       onlineStatus: 'Online · Horário de Lisboa',
       anonymousGreeting: 'Olá! Sou o assistente virtual da OralPro. Como prefere que lhe chame?',
@@ -1328,6 +1330,7 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     chat: {
       buttonLabel: 'Speak with OralPro',
+      talkToUs: 'Contact us',
       title: 'OralPro Virtual Assistant',
       onlineStatus: 'Online · Lisbon Time',
       anonymousGreeting: 'Hello! I am the OralPro virtual assistant. What should I call you?',
@@ -1875,6 +1878,7 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     chat: {
       buttonLabel: 'Parla con OralPro',
+      talkToUs: 'Parla con noi',
       title: 'Assistente Virtuale OralPro',
       onlineStatus: 'Online · Orario di Lisbona',
       anonymousGreeting: 'Ciao! Sono l’assistente virtuale di OralPro. Come preferisci che ti chiami?',

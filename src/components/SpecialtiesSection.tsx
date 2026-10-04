@@ -1,12 +1,14 @@
 import React from 'react';
-import { Sparkles, CheckCircle2 } from 'lucide-react';
+import { Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PageView } from '../types';
 
 interface SpecialtiesSectionProps {
   onOpenBooking: () => void;
+  onNavigate?: (page: PageView) => void;
 }
 
-export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onOpenBooking }) => {
+export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onOpenBooking, onNavigate }) => {
   const { t } = useLanguage();
 
   return (
@@ -70,6 +72,19 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onOpenBo
             </div>
           ))}
         </div>
+
+        {/* View All Areas Page Action */}
+        {onNavigate && (
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => onNavigate('areas')}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 font-bold text-xs sm:text-sm rounded-xl transition-all shadow-xs hover:shadow cursor-pointer"
+            >
+              <span>Explorar Todas as Áreas Clínicas de Alto Valor</span>
+              <ArrowRight className="w-4 h-4 text-blue-600" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

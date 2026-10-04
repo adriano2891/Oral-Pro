@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PageView } from './types';
+import React, { useState, useEffect } from 'react';
+import { PageView, Language } from './types';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -12,32 +12,128 @@ import { ExperienceTrustSection } from './components/ExperienceTrustSection';
 import { FAQSection } from './components/FAQSection';
 import { CTASection } from './components/CTASection';
 import { ServicesPage } from './components/ServicesPage';
+import { MethodPage } from './components/MethodPage';
+import { AreasPage } from './components/AreasPage';
 import { AboutPage } from './components/AboutPage';
+import { FAQPage } from './components/FAQPage';
 import { ContactPage } from './components/ContactPage';
+import { BookingPage } from './components/BookingPage';
 import { BookingSystem } from './components/BookingSystem';
 import { ChatAgent } from './components/ChatAgent';
 import { AdminDashboard } from './components/AdminDashboard';
 import { Footer } from './components/Footer';
 
+const PAGE_ALIASES: Record<string, PageView> = {
+  '': 'home',
+  'inicio': 'home',
+  'home': 'home',
+  'servicos': 'servicos',
+  'services': 'servicos',
+  'servizi': 'servicos',
+  'metodo': 'metodo',
+  'method': 'metodo',
+  'areas': 'areas',
+  'aree': 'areas',
+  'specialties': 'areas',
+  'sobre': 'sobre',
+  'about': 'sobre',
+  'chi-siamo': 'sobre',
+  'duvidas': 'duvidas',
+  'faq': 'duvidas',
+  'contactos': 'contactos',
+  'contact': 'contactos',
+  'contatti': 'contactos',
+  'agendamento': 'agendamento',
+  'booking': 'agendamento',
+  'prenota': 'agendamento',
+  'admin': 'admin',
+};
+
+const PAGE_TITLES: Record<string, Record<PageView, string>> = {
+  pt: {
+    home: 'OralPro - Marketing e Captação para Clínicas Dentárias',
+    servicos: 'Serviços Especializados | OralPro',
+    metodo: 'O Método em 4 Etapas | OralPro',
+    areas: 'Áreas Clínicas de Alto Valor | OralPro',
+    sobre: 'Sobre a OralPro & Mario Provenzano | OralPro',
+    duvidas: 'Perguntas Frequentes & Dúvidas | OralPro',
+    contactos: 'Contactos & Localização | OralPro',
+    agendamento: 'Agendar Reunião de Diagnóstico | OralPro',
+    admin: 'Painel de Gestão Comercial | OralPro',
+  },
+  it: {
+    home: 'OralPro - Marketing e Acquisizione Pazienti per Studi Dentistici',
+    servicos: 'Servizi Specialistici | OralPro',
+    metodo: 'Il Metodo in 4 Fasi | OralPro',
+    areas: 'Aree Cliniche ad Alto Valore | OralPro',
+    sobre: 'Chi Siamo & Mario Provenzano | OralPro',
+    duvidas: 'Domande Frequenti (FAQ) | OralPro',
+    contactos: 'Contatti & Sede | OralPro',
+    agendamento: 'Prenota Diagnosi Strategica | OralPro',
+    admin: 'Pannello di Gestione | OralPro',
+  },
+  en: {
+    home: 'OralPro - Dental Practice Marketing & High-Value Patient Acquisition',
+    servicos: 'Specialized Services | OralPro',
+    metodo: 'The 4-Step Methodology | OralPro',
+    areas: 'High-Ticket Clinical Specialties | OralPro',
+    sobre: 'About OralPro & Mario Provenzano | OralPro',
+    duvidas: 'Frequently Asked Questions | OralPro',
+    contactos: 'Contact Us | OralPro',
+    agendamento: 'Schedule Strategic Diagnostic | OralPro',
+    admin: 'Management Portal | OralPro',
+  },
+};
+
+function parsePath(pathname: string): { lang?: Language; page: PageView } {
+  const clean = pathname.toLowerCase().replace(/^\/+|\/+$/g, '');
+  if (!clean) return { page: 'home' };
+
+  const segments = clean.split('/');
+  let detectedLang: Language | undefined;
+  let pageSegment = segments[0];
+
+  if (['pt', 'it', 'en'].includes(segments[0])) {
+    detectedLang = segments[0] as Language;
+    pageSegment = segments[1] || '';
+  }
+
+  const resolvedPage = PAGE_ALIASES[pageSegment] || 'home';
+  return { lang: detectedLang, page: resolvedPage };
+}
+
 function MainAppLayout() {
   const [currentPage, setCurrentPage] = useState<PageView>(() => {
     if (typeof window !== 'undefined') {
-      const path = window.location.pathname.toLowerCase();
-      const segments = path.split('/').filter(Boolean);
-      if (segments.length > 1) {
-        const potentialPage = segments[1] as PageView;
-        if (['home', 'servicos', 'sobre', 'agendamento', 'contactos', 'admin'].includes(potentialPage)) {
-          return potentialPage;
-        }
-      } else if (segments.length === 1 && segments[0] === 'admin') {
-        return 'admin';
-      }
+      return parsePath(window.location.pathname).page;
     }
     return 'home';
   });
 
   const [isBookingModalOpen, setIsBookingModalOpen] = useState<boolean>(false);
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+
+  // Sync document title on page or language change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const currentLang = localStorage.getItem('oralpro_language') || 'pt';
+      const titles = PAGE_TITLES[currentLang] || PAGE_TITLES.pt;
+      document.title = titles[currentPage] || titles.home;
+    }
+  }, [currentPage]);
+
+  // Handle browser Back & Forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      if (typeof window !== 'undefined') {
+        const parsed = parsePath(window.location.pathname);
+        setCurrentPage(parsed.page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const handleNavigate = (page: PageView) => {
     setCurrentPage(page);
@@ -47,7 +143,11 @@ function MainAppLayout() {
     if (typeof window !== 'undefined') {
       const currentLang = localStorage.getItem('oralpro_language') || 'pt';
       const pagePath = page === 'home' ? '' : `/${page}`;
-      window.history.pushState({ lang: currentLang, page }, '', `/${currentLang}${pagePath}`);
+      const newUrl = `/${currentLang}${pagePath}`;
+      window.history.pushState({ lang: currentLang, page }, '', newUrl);
+
+      const titles = PAGE_TITLES[currentLang] || PAGE_TITLES.pt;
+      document.title = titles[page] || titles.home;
     }
   };
 
@@ -79,11 +179,12 @@ function MainAppLayout() {
   return (
     <LanguageProvider currentPage={currentPage} onPageChange={setCurrentPage}>
       <div className="min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white">
-        {/* Top Header */}
+        {/* Top Header - Always visible with active page indicator */}
         <Navbar
           currentPage={currentPage}
           onNavigate={handleNavigate}
-          onOpenBooking={handleOpenBookingModal}
+          onOpenBooking={() => handleNavigate('agendamento')}
+          onOpenChat={handleOpenChat}
         />
 
         {/* Main Content Router */}
@@ -91,50 +192,94 @@ function MainAppLayout() {
           {currentPage === 'home' && (
             <>
               <HeroSection
-                onOpenBooking={handleOpenBookingModal}
+                onOpenBooking={() => handleNavigate('agendamento')}
                 onOpenChat={handleOpenChat}
               />
-              <ChallengesSection onOpenBooking={handleOpenBookingModal} />
-              <ServicesSection onOpenBooking={handleOpenBookingModal} />
-              <MethodSection onOpenBooking={handleOpenBookingModal} />
-              <SpecialtiesSection onOpenBooking={handleOpenBookingModal} />
-              <AboutSection onOpenBooking={handleOpenBookingModal} />
-              <ExperienceTrustSection onOpenBooking={handleOpenBookingModal} />
+              <ChallengesSection onOpenBooking={() => handleNavigate('agendamento')} />
+              <ServicesSection
+                onOpenBooking={() => handleNavigate('agendamento')}
+                onNavigate={handleNavigate}
+              />
+              <MethodSection
+                onOpenBooking={() => handleNavigate('agendamento')}
+                onNavigate={handleNavigate}
+              />
+              <SpecialtiesSection
+                onOpenBooking={() => handleNavigate('agendamento')}
+                onNavigate={handleNavigate}
+              />
+              <AboutSection
+                onOpenBooking={() => handleNavigate('agendamento')}
+                onNavigate={handleNavigate}
+              />
+              <ExperienceTrustSection onOpenBooking={() => handleNavigate('agendamento')} />
               <FAQSection
-                onOpenBooking={handleOpenBookingModal}
+                onOpenBooking={() => handleNavigate('agendamento')}
                 onOpenChat={handleOpenChat}
+                onNavigate={handleNavigate}
               />
-              <CTASection onOpenBooking={handleOpenBookingModal} />
+              <CTASection onOpenBooking={() => handleNavigate('agendamento')} />
             </>
           )}
 
           {currentPage === 'servicos' && (
             <ServicesPage
-              onOpenBooking={handleOpenBookingModal}
+              onOpenBooking={() => handleNavigate('agendamento')}
+              onOpenChat={handleOpenChat}
+              onNavigate={handleNavigate}
+            />
+          )}
+
+          {currentPage === 'metodo' && (
+            <MethodPage
+              onNavigate={handleNavigate}
+              onOpenBooking={() => handleNavigate('agendamento')}
+              onOpenChat={handleOpenChat}
+            />
+          )}
+
+          {currentPage === 'areas' && (
+            <AreasPage
+              onNavigate={handleNavigate}
+              onOpenBooking={() => handleNavigate('agendamento')}
               onOpenChat={handleOpenChat}
             />
           )}
 
           {currentPage === 'sobre' && (
-            <AboutPage onOpenBooking={handleOpenBookingModal} />
+            <AboutPage
+              onOpenBooking={() => handleNavigate('agendamento')}
+              onNavigate={handleNavigate}
+            />
+          )}
+
+          {currentPage === 'duvidas' && (
+            <FAQPage
+              onNavigate={handleNavigate}
+              onOpenBooking={() => handleNavigate('agendamento')}
+              onOpenChat={handleOpenChat}
+            />
           )}
 
           {currentPage === 'contactos' && (
-            <ContactPage onOpenBooking={handleOpenBookingModal} />
+            <ContactPage
+              onOpenBooking={() => handleNavigate('agendamento')}
+              onNavigate={handleNavigate}
+            />
           )}
 
           {currentPage === 'agendamento' && (
-            <BookingSystem onBookingSuccess={() => {}} />
+            <BookingPage onNavigate={handleNavigate} />
           )}
         </main>
 
-        {/* Footer */}
+        {/* Footer - Always visible across all pages */}
         <Footer
           onNavigate={handleNavigate}
-          onOpenBooking={handleOpenBookingModal}
+          onOpenBooking={() => handleNavigate('agendamento')}
         />
 
-        {/* Reusable Booking Modal */}
+        {/* Reusable Booking Modal (when triggered via modal) */}
         {isBookingModalOpen && (
           <BookingSystem
             isOpenModal={true}
@@ -143,11 +288,11 @@ function MainAppLayout() {
           />
         )}
 
-        {/* Humanized Conversational Agent */}
+        {/* Humanized Conversational Agent - Always visible across all pages */}
         <ChatAgent
           isOpen={isChatOpen}
           onToggle={handleToggleChat}
-          onOpenBooking={handleOpenBookingModal}
+          onOpenBooking={() => handleNavigate('agendamento')}
         />
       </div>
     </LanguageProvider>
@@ -157,3 +302,4 @@ function MainAppLayout() {
 export default function App() {
   return <MainAppLayout />;
 }
+

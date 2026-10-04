@@ -1,12 +1,14 @@
 import React from 'react';
 import { Target, Users, BarChart3, CheckCircle, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PageView } from '../types';
 
 interface ServicesSectionProps {
   onOpenBooking: () => void;
+  onNavigate?: (page: PageView) => void;
 }
 
-export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking }) => {
+export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking, onNavigate }) => {
   const { t } = useLanguage();
   const icons = [Target, Users, BarChart3];
 
@@ -103,6 +105,19 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
             );
           })}
         </div>
+
+        {/* View Full Services Page Action */}
+        {onNavigate && (
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => onNavigate('servicos')}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm hover:shadow cursor-pointer"
+            >
+              <span>Consultar Todos os Serviços em Detalhe</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,17 +1,30 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PageView } from '../types';
 
 interface AboutPageProps {
   onOpenBooking: () => void;
+  onNavigate?: (page: PageView) => void;
 }
 
-export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
+export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking, onNavigate }) => {
   const { t } = useLanguage();
 
   return (
     <div className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb Navigation */}
+        {onNavigate && (
+          <nav className="flex items-center gap-2 text-xs text-slate-500 mb-8 font-medium">
+            <button onClick={() => onNavigate('home')} className="hover:text-blue-600 transition-colors cursor-pointer">
+              {t.nav.home}
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-semibold">{t.nav.about}</span>
+          </nav>
+        )}
+
         {/* Header */}
         <div className="max-w-3xl mb-12">
           <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">

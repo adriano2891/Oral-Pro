@@ -60,6 +60,15 @@ export interface AgentMetric {
   status: 'respondido' | 'duvida_recorrente' | 'encaminhado_humano';
 }
 
-export type PageView = 'home' | 'servicos' | 'sobre' | 'agendamento' | 'contactos' | 'admin';
+export type PageView =
+  | 'home'
+  | 'servicos'
+  | 'metodo'
+  | 'areas'
+  | 'sobre'
+  | 'duvidas'
+  | 'contactos'
+  | 'agendamento'
+  | 'admin';
 
 export type Language = 'pt' | 'it' | 'en';

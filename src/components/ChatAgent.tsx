@@ -1,7 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, Bot, ThumbsUp, ThumbsDown, Calendar, PhoneCall } from 'lucide-react';
+import { Headset, MessageSquare, X, Send, Bot, ThumbsUp, ThumbsDown, Calendar, PhoneCall, Sparkles } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { Language } from '../types';
+import { OralProEmblem } from './OralProLogo';
+
+export const AGENT_AVATAR_SRC = 'https://i.ibb.co/fV5RTsz1/chatgpt-4.png';
+export const AGENT_AVATAR_FALLBACK = '/images/agent-avatar.png';
+
+export const AgentAvatarImage: React.FC<{ className?: string; alt?: string }> = ({
+  className = 'w-7 h-7 object-contain',
+  alt = 'OralPro Atendimento',
+}) => (
+  <img
+    src={AGENT_AVATAR_SRC}
+    onError={(e) => {
+      const target = e.target as HTMLImageElement;
+      if (target.src !== AGENT_AVATAR_FALLBACK) {
+        target.src = AGENT_AVATAR_FALLBACK;
+      }
+    }}
+    alt={alt}
+    className={className}
+  />
+);
 
 interface ChatMessage {
   id: string;
@@ -28,6 +49,16 @@ export const ChatAgent: React.FC<ChatAgentProps> = ({ isOpen, onToggle, onOpenBo
   const [loading, setLoading] = useState<boolean>(false);
   const [humanCallbackRequested, setHumanCallbackRequested] = useState<boolean>(false);
   const [callbackPhone, setCallbackPhone] = useState<string>('');
+  const [showTitleBadge, setShowTitleBadge] = useState<boolean>(true);
+
+  // Automatically hide the "Fale Connosco" title after 1 minute (reappears upon reloading the page)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTitleBadge(false);
+    }, 60000); // 1 minute (60 seconds)
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
@@ -229,31 +260,76 @@ export const ChatAgent: React.FC<ChatAgentProps> = ({ isOpen, onToggle, onOpenBo
 
   return (
     <>
-      {/* Floating Toggle Button */}
+      {/* Floating Tooth-Shaped Toggle Button */}
       {!isOpen && (
         <button
           onClick={onToggle}
-          className="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-3.5 sm:px-4 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2.5 group cursor-pointer"
+          type="button"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group flex items-center gap-2 cursor-pointer focus:outline-none select-none transition-transform duration-300 ease-out hover:scale-105 active:scale-95"
+          style={{
+            bottom: 'max(1rem, env(safe-area-inset-bottom, 16px))',
+            right: 'max(1rem, env(safe-area-inset-right, 16px))',
+          }}
           aria-label={t.chat.buttonLabel}
         >
-          <div className="relative">
-            <MessageSquare className="w-5 h-5 transition-transform group-hover:scale-110" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white animate-pulse" />
+          {/* Discrete "Fale Connosco" Indication Badge - Visible for 1 min, then smoothly hidden (reappears on page reload) */}
+          <div
+            className={`bg-white/95 backdrop-blur-xs text-slate-700 border border-slate-200/90 shadow-sm px-2.5 py-1 rounded-full flex items-center gap-1.5 transition-all duration-700 ease-in-out ${
+              showTitleBadge
+                ? 'opacity-100 max-w-[160px] translate-x-0'
+                : 'opacity-0 max-w-0 -mr-2 px-0 py-0 border-0 overflow-hidden pointer-events-none translate-x-2'
+            } group-hover:opacity-100 group-hover:max-w-[160px] group-hover:mr-0 group-hover:px-2.5 group-hover:py-1 group-hover:border group-hover:border-blue-400 group-hover:shadow-md group-hover:pointer-events-auto group-hover:translate-x-0`}
+          >
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500 ring-1 ring-white" />
+            </span>
+            <span className="text-[10px] sm:text-[11px] font-semibold text-slate-700 tracking-tight whitespace-nowrap">
+              {t.chat.talkToUs}
+            </span>
           </div>
-          <span className="hidden sm:inline font-semibold text-xs whitespace-nowrap">
-            {t.chat.buttonLabel}
-          </span>
+
+          {/* Tooth Silhouette Shape Card filled professionally with the Provided Image */}
+          <div className="relative w-13 h-14 sm:w-14 sm:h-15 flex items-center justify-center shrink-0 animate-gentle-pulse">
+            <div className="relative w-full h-full flex items-center justify-center">
+              <img
+                src={AGENT_AVATAR_SRC}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.src !== AGENT_AVATAR_FALLBACK) {
+                    target.src = AGENT_AVATAR_FALLBACK;
+                  }
+                }}
+                alt="OralPro Atendimento"
+                className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(30,64,175,0.22)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.06)] select-none pointer-events-none transition-transform duration-300 group-hover:scale-108"
+              />
+
+              {/* Live Online Indicator Ring on top-right cusp */}
+              <span className="absolute top-0 right-0 sm:top-0.5 sm:right-0.5 flex h-2.5 w-2.5 pointer-events-none">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 ring-1.5 ring-white shadow-xs" />
+              </span>
+            </div>
+          </div>
         </button>
       )}
 
       {/* Chat Drawer / Modal */}
       {isOpen && (
-        <div className="fixed inset-x-4 bottom-4 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 max-h-[85vh] sm:max-h-[600px] z-50 bg-white rounded-2xl border border-slate-200 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div
+          className="fixed inset-x-3 bottom-3 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 max-h-[88vh] sm:max-h-[600px] z-50 bg-white rounded-2xl border border-slate-200 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
+          style={{
+            bottom: 'max(0.75rem, env(safe-area-inset-bottom, 12px))',
+          }}
+        >
           {/* Header */}
           <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
-                <Bot className="w-4 h-4" />
+              <div className="relative shrink-0">
+                <div className="w-10 h-10 rounded-full bg-white p-1 flex items-center justify-center ring-2 ring-white/80 shadow-xs">
+                  <AgentAvatarImage className="w-full h-full object-contain" />
+                </div>
+                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-slate-900 animate-pulse" />
               </div>
               <div>
                 <h4 className="text-sm font-bold leading-tight">
@@ -268,7 +344,7 @@ export const ChatAgent: React.FC<ChatAgentProps> = ({ isOpen, onToggle, onOpenBo
 
             <button
               onClick={onToggle}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
               aria-label={t.common.close}
             >
               <X className="w-4 h-4" />
@@ -280,17 +356,27 @@ export const ChatAgent: React.FC<ChatAgentProps> = ({ isOpen, onToggle, onOpenBo
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
+                className={`flex gap-2 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div
-                  className={`max-w-[85%] rounded-xl px-3.5 py-2.5 leading-relaxed ${
-                    m.sender === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-none shadow-xs'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-xs'
-                  }`}
-                >
-                  <p>{m.text}</p>
-                </div>
+                {m.sender === 'bot' && (
+                  <div
+                    className="shrink-0 mt-0.5 w-7 h-7 rounded-full bg-white p-0.5 flex items-center justify-center border border-slate-200/90 shadow-xs"
+                    title="OralPro Atendimento"
+                  >
+                    <AgentAvatarImage className="w-full h-full object-contain" />
+                  </div>
+                )}
+
+                <div className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%]`}>
+                  <div
+                    className={`rounded-xl px-3.5 py-2.5 leading-relaxed ${
+                      m.sender === 'user'
+                        ? 'bg-blue-600 text-white rounded-br-none shadow-xs'
+                        : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-xs'
+                    }`}
+                  >
+                    <p>{m.text}</p>
+                  </div>
 
                 {/* Subtext info & rating buttons for bot */}
                 <div className="flex items-center gap-2 mt-1 px-1 text-[10px] text-slate-400">
@@ -336,7 +422,8 @@ export const ChatAgent: React.FC<ChatAgentProps> = ({ isOpen, onToggle, onOpenBo
                   </div>
                 )}
               </div>
-            ))}
+            </div>
+          ))}
 
             {/* Name Input step for anonymous visitor */}
             {!isNameConfirmed && (

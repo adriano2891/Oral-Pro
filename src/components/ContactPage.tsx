@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PageView } from '../types';
 
 interface ContactPageProps {
   onOpenBooking: () => void;
+  onNavigate?: (page: PageView) => void;
 }
 
-export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
+export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking, onNavigate }) => {
   const { t } = useLanguage();
 
   const [form, setForm] = useState({
@@ -58,6 +60,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
   return (
     <div className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb Navigation */}
+        {onNavigate && (
+          <nav className="flex items-center gap-2 text-xs text-slate-500 mb-8 font-medium">
+            <button onClick={() => onNavigate('home')} className="hover:text-blue-600 transition-colors cursor-pointer">
+              {t.nav.home}
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-semibold">{t.nav.contact}</span>
+          </nav>
+        )}
+
         <div className="max-w-3xl mb-12">
           <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">
             {t.contactPage.tag}

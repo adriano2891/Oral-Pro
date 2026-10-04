@@ -1,12 +1,14 @@
 import React from 'react';
-import { Search, Compass, Rocket, Activity, Check } from 'lucide-react';
+import { Search, Compass, Rocket, Activity, Check, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PageView } from '../types';
 
 interface MethodSectionProps {
   onOpenBooking: () => void;
+  onNavigate?: (page: PageView) => void;
 }
 
-export const MethodSection: React.FC<MethodSectionProps> = ({ onOpenBooking }) => {
+export const MethodSection: React.FC<MethodSectionProps> = ({ onOpenBooking, onNavigate }) => {
   const { t } = useLanguage();
   const icons = [Search, Compass, Rocket, Activity];
 
@@ -86,12 +88,23 @@ export const MethodSection: React.FC<MethodSectionProps> = ({ onOpenBooking }) =
             </div>
           </div>
 
-          <button
-            onClick={onOpenBooking}
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm whitespace-nowrap transition-colors"
-          >
-            <span>{t.method.bannerButton}</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('metodo')}
+                className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-lg border border-slate-700 whitespace-nowrap transition-colors cursor-pointer"
+              >
+                <span>Conhecer Método Completo</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+            <button
+              onClick={onOpenBooking}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm whitespace-nowrap transition-colors cursor-pointer"
+            >
+              <span>{t.method.bannerButton}</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>

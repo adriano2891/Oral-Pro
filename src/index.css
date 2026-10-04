@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+  }
+
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
@@ -14,4 +20,18 @@
 /* Custom smooth transitions */
 .transition-smooth {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Gentle subtle pulsing animation for tooth attendant icon */
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 2.8s ease-in-out infinite;
 }
